@@ -1,4 +1,4 @@
-package com.example.labo3.Functions
+package com.example.labo3.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

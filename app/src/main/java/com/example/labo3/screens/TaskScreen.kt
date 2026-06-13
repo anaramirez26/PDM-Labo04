@@ -1,4 +1,4 @@
-package com.example.labo3.Screens
+package com.example.labo3.screens
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -14,26 +14,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.labo3.Functions.CreateTask
-import com.example.labo3.Model.Task
-import com.example.labo3.TaskCard
-import com.example.labo3.ViewModel.GeneralViewModel
+import androidx.lifecycle.ViewModel
+import com.example.labo3.components.CreateTask
+import com.example.labo3.components.TaskCard
+import com.example.labo3.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting() {
+fun Greeting(
+    viewModel: TaskViewModel
+) {
     var showDialog by remember { mutableStateOf(false) }
-    val taskList = remember { mutableStateListOf< Task>() }
-    val viewModel: GeneralViewModel = viewModel()
+    val taskList by viewModel.allTasks.collectAsState(emptyList())
 
     Scaffold(
         topBar = {
@@ -48,7 +47,11 @@ fun Greeting() {
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             items(taskList){
                     task ->
-                TaskCard(task)
+                TaskCard(
+                    taskTitle = task.title,
+                    taskDescription = task.description,
+                    taskEndDate = task.endDate
+                )
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
@@ -57,12 +60,10 @@ fun Greeting() {
             CreateTask (
                 onDismiss = { showDialog = false },
                 onTaskCreated = { newTitle, newDescription ->
-                    val newTask = Task(
-                        id = taskList.size + 1,
+                    viewModel.addTask(
                         title = newTitle,
                         description = newDescription
                     )
-                    taskList.add(newTask)
                     showDialog = false
                 }
             )

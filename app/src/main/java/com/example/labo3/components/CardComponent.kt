@@ -1,4 +1,4 @@
-package com.example.labo3
+package com.example.labo3.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,13 +12,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.labo3.Model.Task
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TaskCard(
-    task: Task,
+    taskTitle: String,
+    taskDescription: String,
+    taskEndDate: Long,
     modifier: Modifier = Modifier
 ) {
+    val date = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+    val formattedDate = date.format(Date(taskEndDate))
+
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -29,21 +36,21 @@ fun TaskCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Título: " + task.title,
+                text = "Título: $taskTitle",
                 style = MaterialTheme.typography.titleMedium
             )
 
-            if (task.description.isNotBlank()) {
+            if (taskDescription.isNotBlank()) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Descripción: " + task.description,
+                    text = "Descripción: $taskDescription",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             Text(
-                text = "Fecha: " + task.endDate.toString()
+                text = "Fecha: $formattedDate"
             )
         }
     }

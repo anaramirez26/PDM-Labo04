@@ -1,4 +1,4 @@
-package com.example.labo3.Screens
+package com.example.labo3.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    onNavigateMenu: (String) -> Unit,
+) {
 
 
 
@@ -32,7 +34,7 @@ fun HomeScreen(navController: NavController) {
             Text(
                 text = "OPCIONES: "
             )
-            Button(onClick = {navController.navigate("main")}) {
+            Button(onClick = {onNavigateMenu("tasks_screen")}) {
                 Text("Lista de tareas")
             }
         }
